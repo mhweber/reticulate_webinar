@@ -1,31 +1,30 @@
-reticulate - using python from R
+reticulate - using Python from R
 ========================================================
 author: Marc Weber
 date: `r format(Sys.time(), '%d %B, %Y')`
 autosize: true
 
-First Slide
+What is reticulate?
 ========================================================
 
-For more details on authoring R presentations please visit <https://support.rstudio.com/hc/en-us/articles/200486468>.
+An R package for interoperability with Python that lets you:
 
-- Bullet 1
-- Bullet 2
-- Bullet 3
+* Call Python from R in several different ways-
+    + Within RMarkdown
+    + By sourcing Scripts
+    + By importing Python modules
+    + By running Python interactively in R session
+* Translate directly between R and Python objects
+* Use different versions of Python (virtual and Conda environments)
 
-Slide With Code
+
+Why use reticulate?
 ========================================================
 
-```{r}
-summary(cars)
-```
+* Can run Python within R in a number of flexible ways
+* You can also call Python objects directly in R
+* Reproducible research that seamlessly weaves both languages together - very powerful!
 
-Slide With Plot
-========================================================
-
-```{r, echo=FALSE}
-plot(cars)
-```
 
 Resources
 ========================================================
