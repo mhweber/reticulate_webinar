@@ -1,0 +1,135 @@
+---
+title: "Reticulate"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+### Import reticulate
+First we'll import reticulate in an R code block
+```{r}
+library(reticulate)
+```
+
+### Run Python code
+We can immediately start playing with python within a code block designated as python
+```{python}
+import pandas as pd
+
+print('hello python')
+
+some_dict = {'a':1, 'b':2, 'c':3}
+
+print(some_dict.keys())
+```
+
+Import Python modules
+With reticulate, we can also import any Python module and call that module from R
+```{r}
+os <- import("os")
+os$listdir(".")
+```
+
+### REPL sessions
+We can also start a Python REPL (read-eval-print shell) within our session by calling repl_python() at console (see console).  Notice the message I get when I start REPL on Python version being used
+```{r}
+# repl_python()
+# below code at console
+# import pandas as pd
+# gages = pd.read_csv('https://raw.githubusercontent.com/mhweber/R-User-Group-Spatial-Workshop-2018/gh-pages/data/StreamGages.csv')
+# gages.head()
+# gages['STATE'].unique()
+# PNW_gages = gages[gages['STATE'].isin(['OR','WA','ID'])]
+# exit
+```
+
+### Access Python objects directly from R
+Now work with the pandas data directly within R
+```{r}
+library(sf)
+library(ggplot2)
+
+gages <- st_as_sf(py$PNW_gages,coords = c('LON_SITE','LAT_SITE'),crs = 4269) 
+gages <- st_transform(gages, crs=5070) #5070 is Albers system in metres
+ggplot(gages) + geom_sf()
+```
+
+reticulate converts to equivalent data structures between R and Python
+```{r}
+class(py$PNW_gages)
+```
+
+### Access R objects from Python
+Conversely, we can access our R objects within python chunks
+```{python}
+print(r.gages.head())
+# list the column names
+list(r.gages)
+# what are all the values of STATE?
+r.gages.STATE.unique()
+```
+
+reticulate converts to equivalent data structures between Python and R 
+```{python}
+type(r.gages)
+```
+
+### Matrics and numpy arrays
+reticulate allows integration between Python numpy arrays and R matrices.  reticulate automatically converts to equivalent R types unless you override (i.e. convert=FALSE).  Treatment of numpy arrays in R deserves consideration!
+```{r}
+# import numpy into R
+np <- import("numpy")
+matrix1 <- matrix(data = 1:25, nrow = 5, ncol = 5)
+matrix2 <- matrix(data = 25:1, nrow = 5, ncol = 5)
+
+# multiply matrices as numpy arrays
+matrix3 <- np$matmul(matrix1, matrix2)
+
+# An R matrix
+class(matrix3)
+
+print(matrix3)
+
+# import numpy into R but don't allow default conversion just to contrast
+np <- import("numpy", convert=FALSE)
+matrix1 <- np$arange(1, 26)$reshape(5L, 5L)
+matrix1 <- matrix1$astype(dtype="int") # I wasn't savvy enough to bake this into previous line....
+matrix2 <- matrix(data=25:1, nrow=5, ncol=5)
+class(matrix1)
+class(matrix2)
+matrix3 <- np$matmul(matrix1, matrix2)
+class(matrix3)
+print(matrix3)
+```
+
+### Python versions
+You can use
+- Specific Python binaries you point to
+- Python virtual environments
+- Conda environments
+
+You can first simply get information on what versions of Python are available and what version of Python and numpy are in use
+```{r}
+py_config()
+```
+
+### Specify python to use 
+Either by path or by conda environment:
+```{r}
+use_condaenv("StreamCat")
+use_python("C:/Python27/ArcGISx6410.7")
+```
+
+### Create conda or virtual environment
+Create environments, install packages, remove environments in isolated environments
+```{r}
+conda_create("demo")
+conda_install("demo", "pillow")
+pil <- import("PIL") # I've added the Python Imaging Library to new 'demo' environment and loaded library into R
+conda_remove("demo")
+
+virtualenv_create("demo")
+virtualenv_install("demo", "pillow")
+pil <- import("PIL") # I've added the Python Imaging Library to new 'demo' environment and loaded library into R
+virtualenv_remove("demo")
+```
