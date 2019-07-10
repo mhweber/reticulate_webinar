@@ -5,16 +5,71 @@ editor_options:
   chunk_output_type: inline
 ---
 
-This is an [R Markdown](http://rmarkdown.rstudio.com) Notebook. When you execute code within the notebook, the results appear beneath the code. 
-
-Try executing this chunk by clicking the *Run* button within the chunk or by placing your cursor inside it and pressing *Ctrl+Shift+Enter*. 
-
+# Import reticulate
+First we'll import reticulate in an R code block:
 ```{r}
-plot(cars)
+library(reticulate)
 ```
 
-Add a new chunk by clicking the *Insert Chunk* button on the toolbar or by pressing *Ctrl+Alt+I*.
+# Run Python code
+We can immediately start playing with python within a code block designated as python:
+```{python}
+import pandas as pd
 
-When you save the notebook, an HTML file containing the code and output will be saved alongside it (click the *Preview* button or press *Ctrl+Shift+K* to preview the HTML file).
+print('hello python')
 
-The preview shows you a rendered HTML copy of the contents of the editor. Consequently, unlike *Knit*, *Preview* does not run any R code chunks. Instead, the output of the chunk when it was last run in the editor is displayed.
+some_dict = {'a':1, 'b':2, 'c':3}
+
+print(some_dict.keys())
+```
+
+# Import Python modules
+With reticulate, we can also import any Python module and call that module from R:
+```{r}
+os <- import("os")
+os$listdir(".")
+```
+
+# REPL sessions
+We can also start a Python REPL (read-eval-print shell) within our session by calling repl_python() at console (see console).  Notice the message I get when I start REPL on Python version being used
+```{r}
+# repl_python()
+# below code at console
+# import pandas as pd
+# gages = pd.read_csv('https://raw.githubusercontent.com/mhweber/R-User-Group-Spatial-Workshop-2018/gh-pages/data/StreamGages.csv')
+# gages.head()
+# gages['STATE'].unique()
+# PNW_gages = gages[gages['STATE'].isin(['OR','WA','ID'])]
+# exit
+```
+
+# Access Python objects directly from R
+Now work with the pandas data directly within R!
+```{r}
+library(sf)
+library(ggplot2)
+
+gages <- st_as_sf(py$PNW_gages,coords = c('LON_SITE','LAT_SITE'),crs = 4269) 
+gages <- st_transform(gages, crs=5070) #5070 is Albers system in metres
+ggplot(gages) + geom_sf()
+```
+
+# Access R objects from Python
+Conversely, we can access our R objects within python chunks
+```{python}
+print(r.gages.head())
+# list the column names
+list(r.gages)
+# what are all the values of STATE?
+r.gages.STATE.unique()
+```
+
+# Python versions
+You can use:
+- Specific Python binaries you point to
+- Python virtual environments
+- Conda environments
+```{r}
+py_config()
+
+```
