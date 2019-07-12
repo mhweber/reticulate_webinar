@@ -25,6 +25,11 @@ Why use reticulate?
 * You can also call Python objects directly in R
 * Reproducible research that seamlessly weaves both languages together - very powerful!
 
+How I use reticulate
+========================================================
+-[Aligning sample site data to streams](CheckCleanSiteDataAppalachia.html)
+
+-[Contructing NARS Sample frames]()
 
 Resources
 ========================================================
@@ -33,4 +38,3 @@ Resources
 - [RStudio Blog article on reticulate](https://blog.rstudio.com/2018/03/26/reticulate-r-interface-to-python/)
 - [reticulate GitHub repo](https://github.com/rstudio/reticulate)
 - [reticulate in Context of Apache Arrow](https://blog.rstudio.com/2018/04/19/arrow-and-beyond/)
-- [Blog post](https://www.brodrigues.co/blog/2018-12-30-reticulate/)

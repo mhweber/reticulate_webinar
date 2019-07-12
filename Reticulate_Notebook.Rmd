@@ -1,0 +1,40 @@
+---
+title: "Reticulate"
+output: html_notebook
+editor_options: 
+  chunk_output_type: inline
+---
+
+First we'll import reticulate in an R code block:
+```{r}
+library(reticulate)
+```
+
+We can immediately start playing with python within a code block designated as python:
+```{python}
+import pandas as pd
+
+print 'hello python'
+
+some_dict = {'a':1, 'b':2, 'c':3}
+
+print some_dict.keys()
+```
+
+With reticulate, we can also import any Python module and call that module from R:
+```{r}
+os <- import("os")
+os$listdir(".")
+```
+
+We can also start a Python REPL (read-eval-print shell) within our session by calling repl_python() at console (see console)
+```{r}
+repl_python()
+# below code at console
+# import pandas as pd
+# gages = pd.read_csv('https://raw.githubusercontent.com/mhweber/R-User-Group-Spatial-Workshop-2018/gh-pages/data/StreamGages.csv')
+# gages.head()
+# gages['STATE'].unique()
+# 
+```
+
