@@ -29,6 +29,10 @@ With reticulate, we can also import any Python module and call that module from 
 ```{r}
 os <- import("os")
 os$listdir(".")
+
+# Notice the code completion for methods available in python modules!!!
+sys <- import('sys')
+sys$
 ```
 
 ### REPL sessions
@@ -157,6 +161,11 @@ Either by path or by conda environment:
 ```{r}
 use_condaenv("StreamCat")
 use_python("C:/Python27/ArcGISx6410.7")
+
+# Note that to actually work you have to run immediately before you do anything else - once initialized, you can't change Python versions within an R session.
+# retiulate
+# use_condaenv("StreamCat", required = T)
+# use_python("C:/Python27/ArcGISx6410.7", required = T)
 ```
 
 ### Create conda or virtual environment
