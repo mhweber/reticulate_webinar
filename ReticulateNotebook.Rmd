@@ -23,7 +23,8 @@ some_dict = {'a':1, 'b':2, 'c':3}
 print(some_dict.keys())
 ```
 
-Import Python modules
+
+### Import Python modules
 With reticulate, we can also import any Python module and call that module from R
 ```{r}
 os <- import("os")
@@ -54,6 +55,20 @@ gages <- st_transform(gages, crs=5070) #5070 is Albers system in metres
 ggplot(gages) + geom_sf()
 ```
 
+
+### Source Python scripts
+If we have a python script called 'sum_avg.py' with this code:
+```{python}
+def sum_avg(x,y):
+    return(x+y, (x + y)/2)
+```
+
+We can run it in R with:
+```{r}
+source_python('sum_avg.py')
+sum_avg(4,4)
+```
+
 reticulate converts to equivalent data structures between R and Python
 ```{r}
 class(py$PNW_gages)
@@ -72,6 +87,30 @@ r.gages.STATE.unique()
 reticulate converts to equivalent data structures between Python and R 
 ```{python}
 type(r.gages)
+```
+
+
+We noted earlier how we access Python functions, methods, data via the $ operator.
+And that reticulate automatically transforms objects in Python to equivalent objects in R.
+Here's an example from [this Rpub](https://rstudio-pubs-static.s3.amazonaws.com/397064_bd288708515c4b71a6e78dfe91b8bb99.html) that shows where and why we might bypass this.
+```{r}
+pandas <- import("pandas")
+titanic <- pandas$read_csv("https://goo.gl/4Gqsnz")
+titanic$describe()
+```
+
+We need to override automatic conversion and specify `convert=FALSE`
+```{r}
+pandas <- import("pandas", convert =FALSE)
+titanic <- pandas$read_csv("https://goo.gl/4Gqsnz")
+description <- titanic$describe()
+```
+
+
+We can directly convert objects from Python to R, and R to Python with reticulate using `py_to_r()` and `r_to_py`
+```{r}
+description_r <- py_to_r(description)
+description_py = r_to_py(description_r)
 ```
 
 ### Matrics and numpy arrays
