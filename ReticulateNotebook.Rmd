@@ -93,7 +93,6 @@ reticulate converts to equivalent data structures between Python and R
 type(r.gages)
 ```
 
-
 We noted earlier how we access Python functions, methods, data via the $ operator.
 And that reticulate automatically transforms objects in Python to equivalent objects in R.
 Here's an example from [this Rpub](https://rstudio-pubs-static.s3.amazonaws.com/397064_bd288708515c4b71a6e78dfe91b8bb99.html) that shows where and why we might bypass this.
