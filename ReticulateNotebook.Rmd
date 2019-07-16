@@ -38,7 +38,7 @@ sys$
 ### REPL sessions
 We can also start a Python REPL (read-eval-print shell) within our session by calling repl_python() at console (see console).  Notice the message I get when I start REPL on Python version being used
 ```{r}
-# repl_python()
+repl_python()
 # below code at console
 # import pandas as pd
 # gages = pd.read_csv('https://raw.githubusercontent.com/mhweber/R-User-Group-Spatial-Workshop-2018/gh-pages/data/StreamGages.csv')
@@ -59,20 +59,6 @@ gages <- st_transform(gages, crs=5070) #5070 is Albers system in metres
 ggplot(gages) + geom_sf()
 ```
 
-
-### Source Python scripts
-If we have a python script called 'sum_avg.py' with this code:
-```{python}
-def sum_avg(x,y):
-    return(x+y, (x + y)/2)
-```
-
-We can run it in R with:
-```{r}
-source_python('sum_avg.py')
-sum_avg(4,4)
-```
-
 reticulate converts to equivalent data structures between R and Python
 ```{r}
 class(py$PNW_gages)
@@ -80,7 +66,8 @@ class(py$PNW_gages)
 
 ### Access R objects from Python
 Conversely, we can access our R objects within python chunks
-```{python}
+```{r}
+repl_python()
 print(r.gages.head())
 # list the column names
 list(r.gages)
@@ -90,7 +77,7 @@ r.gages.STATE.unique()
 
 reticulate converts to equivalent data structures between Python and R 
 ```{python}
-type(r.gages)
+print(type(r.gages))
 ```
 
 We noted earlier how we access Python functions, methods, data via the $ operator.
@@ -109,11 +96,23 @@ titanic <- pandas$read_csv("https://goo.gl/4Gqsnz")
 description <- titanic$describe()
 ```
 
-
 We can directly convert objects from Python to R, and R to Python with reticulate using `py_to_r()` and `r_to_py`
 ```{r}
 description_r <- py_to_r(description)
 description_py = r_to_py(description_r)
+```
+
+### Source Python scripts
+If we have a python script called 'sum_avg.py' with this code:
+```{python}
+def sum_avg(x,y):
+    return(x+y, (x + y)/2)
+```
+
+We can run it in R with:
+```{r}
+source_python('sum_avg.py')
+sum_avg(4,4)
 ```
 
 ### Matrics and numpy arrays
