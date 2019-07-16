@@ -5,9 +5,10 @@ I simply add the code chunk knitr parameter engine='python' and provide a path t
 using both languages, but as you'll see in this overview reticulate adds lots of functionality and allows really powerful integration of R and Python
 
 Slide 2
-- I'm going to move into an R notebook and just do some live demos of the main features and approaches to using reticulate
 - reticulate uses a Python engine for RMarkdown that lets you run Python chunks in a single Python session within your R session and you can share objects
   between R and Python and vice versa
+- I'm going to move into an R notebook and just do some live demos of the main features and approaches to using reticulate
+
 
 Chunk 1 & 2
 - To get started, load the reticulate library, and in an RMarkdown document or notebook, create a Python chunk, write your Python code, and run the code chunk
