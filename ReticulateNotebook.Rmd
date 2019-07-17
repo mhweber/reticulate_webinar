@@ -86,13 +86,16 @@ Here's an example from [this Rpub](https://rstudio-pubs-static.s3.amazonaws.com/
 ```{r}
 pandas <- import("pandas")
 titanic <- pandas$read_csv("https://goo.gl/4Gqsnz")
-titanic$describe()
+titanic$describe()  # doesn't work - we don't have access to pandas data frame methods - why?
+# hint...
+class(titanic)
 ```
 
 We need to override automatic conversion and specify `convert=FALSE`
 ```{r}
 pandas <- import("pandas", convert =FALSE)
 titanic <- pandas$read_csv("https://goo.gl/4Gqsnz")
+class(titanic)
 description <- titanic$describe()
 ```
 
